@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>沐影影像｜Short Film Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 單色藍階 + 黑底 */
+  --black:#000;--bg:#02050c;
+  --blue-700:#0a3fbf;--blue-500:#1f6bff;--blue-400:#3d8bff;--blue-300:#7db6ff;--blue-100:#cfe4ff;
+  --text:#e6f0ff;--muted:#8ea4c8;
+  --surface:rgba(10,24,58,.5);--surface-hi:rgba(31,107,255,.14);
+  --line:rgba(61,139,255,.22);--line-hi:rgba(61,139,255,.6);
+  --glow:0 0 12px rgba(61,139,255,.5),0 0 34px rgba(31,107,255,.22);
+  --font-display:"Orbitron","Noto Sans TC",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --font-body:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;font-size:16px;line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(60vw 50vh at 85% -8%,rgba(31,107,255,.22),transparent 60%),
+    radial-gradient(50vw 50vh at 0% 30%,rgba(10,63,191,.2),transparent 60%),
+    linear-gradient(rgba(61,139,255,.045) 1px,transparent 1px) 0 0/48px 48px,
+    linear-gradient(90deg,rgba(61,139,255,.045) 1px,transparent 1px) 0 0/48px 48px,
+    var(--bg)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px)}
+.glow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;z-index:-1;background:radial-gradient(circle,rgba(61,139,255,.14),transparent 65%);transform:translate(-50%,-50%);left:50%;top:30%}
+::selection{background:var(--blue-500);color:#fff}
+:focus-visible{outline:2px solid var(--blue-100);outline-offset:3px}
+[hidden]{display:none!important}
+
+.wrap{max-width:1000px;margin:auto;padding:0 32px}
+
+/* nav */
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.logo{font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:.22em}
+.logo i{font-style:normal;color:var(--blue-400);text-shadow:var(--glow)}
+.navtag{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+
+/* hero (只在第一階段) */
+.hero{padding:56px 0 8px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.24em;color:var(--blue-400);text-transform:uppercase}
+.eyebrow::before{content:"// ";color:var(--blue-700)}
+h1{font-family:var(--font-display);font-weight:900;font-size:clamp(32px,6vw,68px);line-height:1.04;margin:16px 0 20px;text-transform:uppercase;
+  background:linear-gradient(100deg,#fff 0%,var(--blue-300) 45%,var(--blue-500) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:460px;margin:0;border-left:2px solid var(--blue-500);padding-left:14px;line-height:1.9}
+
+/* stepper */
+.stepper{display:flex;margin:32px 0 0;padding:14px 0 10px;list-style:none;background:rgba(2,5,12,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line)}
+.stepper li{flex:1;min-width:0;position:relative}
+/* 圓點之間的連線：走過或目前的階段會亮起 */
+.stepper li+li::before{content:"";position:absolute;top:21px;right:50%;width:100%;height:2px;background:var(--line);transition:background .3s,box-shadow .3s}
+.stepper li:has(.done)::before,.stepper li:has([aria-current="step"])::before{background:var(--blue-400);box-shadow:0 0 8px rgba(61,139,255,.6)}
+.step{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 2px;background:transparent;border:0;color:var(--muted);font:inherit;cursor:pointer;position:relative;z-index:1;transition:color .2s}
+.step:hover{color:var(--text)}
+.step .n{flex:none;width:44px;height:44px;display:grid;place-items:center;background:var(--bg);border:1px solid var(--line-hi);font-family:var(--font-mono);font-size:14px;border-radius:50%;transition:all .2s}
+.step:hover .n{border-color:var(--blue-400);box-shadow:var(--glow)}
+.step .t{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.step.done .n{background:var(--blue-700);border-color:var(--blue-400);color:#fff}
+.step.done .n::before{content:"✓"}
+.step.done .n span{display:none}
+.step[aria-current="step"]{color:#fff}
+.step[aria-current="step"] .n{background:var(--blue-500);border-color:var(--blue-300);color:#fff;box-shadow:var(--glow),0 0 0 4px rgba(31,107,255,.2)}
+.progress{display:none;height:2px;background:var(--line)}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue-700),var(--blue-300));box-shadow:var(--glow);transition:width .35s ease}
+
+/* panels */
+.panel{padding:56px 0 24px;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.panel .eyebrow{margin-bottom:10px}
+h2{font-family:var(--font-display);font-size:clamp(24px,3.4vw,32px);font-weight:700;margin:0 0 8px}
+.sub{color:var(--muted);font-size:14px;line-height:1.8;margin:0 0 30px}
+.content{max-width:780px}
+label{display:block;font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;margin:24px 0 8px;color:var(--blue-300);text-transform:uppercase}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:2px;background:rgba(0,4,14,.75);padding:13px 14px;min-height:46px;font:inherit;font-size:15px;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
+input::placeholder,textarea::placeholder{color:#5f77a0}
+textarea{min-height:100px;resize:vertical}
+input:focus,textarea:focus,select:focus{border-color:var(--blue-400);box-shadow:var(--glow)}
+select option{background:#050b1a;color:var(--text)}
+
+.options{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.option{appearance:none;border:1px solid var(--line);border-radius:2px;background:rgba(0,4,14,.6);padding:12px 18px;min-height:44px;font:inherit;font-size:14px;color:var(--muted);cursor:pointer;transition:all .18s}
+.option:hover{border-color:var(--line-hi);color:var(--text)}
+.option.on{background:var(--surface-hi);border-color:var(--blue-400);color:var(--blue-100);box-shadow:var(--glow)}
+
+.refs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ref{background:var(--surface);border:1px solid var(--line);padding:18px;position:relative;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.ref::before{content:"";position:absolute;top:-1px;left:-1px;width:14px;height:14px;border-top:2px solid var(--blue-400);border-left:2px solid var(--blue-400)}
+.refnum{font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;color:var(--blue-400);margin-bottom:14px}
+.ref input{font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tag{border:1px solid var(--line);padding:8px 11px;font-size:12px;color:var(--muted);cursor:pointer;border-radius:2px;transition:all .15s;min-height:34px;display:inline-flex;align-items:center}
+.tag:hover{border-color:var(--line-hi);color:var(--text)}
+.tag.on{background:var(--surface-hi);border-color:var(--blue-400);color:var(--blue-100);box-shadow:0 0 10px rgba(61,139,255,.35)}
+
+.looks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.look{min-height:150px;border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;background:var(--surface);transition:all .2s;position:relative;overflow:hidden}
+.look::after{content:"";position:absolute;right:0;bottom:0;border-style:solid;border-width:0 0 22px 22px;border-color:transparent transparent var(--line) transparent;transition:border-color .2s}
+.look:hover{border-color:var(--line-hi);transform:translateY(-3px)}
+.look.on{border-color:var(--blue-400);background:linear-gradient(160deg,rgba(31,107,255,.28),rgba(10,63,191,.12));box-shadow:var(--glow)}
+.look.on::after{border-bottom-color:var(--blue-400)}
+.look b{font-family:var(--font-display);font-weight:700;font-size:20px}
+.look small{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);margin-top:8px}
+.look.on small{color:var(--blue-300)}
+
+.specs{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 36px}
+.upload{margin-top:26px;border:1px dashed var(--line-hi);padding:20px;font-size:13px;color:var(--muted);background:rgba(31,107,255,.04);text-transform:none;letter-spacing:.02em;font-family:var(--font-body)}
+.upload input{border:0;background:transparent;margin-top:10px;padding:8px 0;color:var(--text)}
+.upload input::file-selector-button{background:transparent;border:1px solid var(--blue-400);color:var(--blue-300);padding:8px 14px;margin-right:12px;cursor:pointer;font:inherit;font-size:12px;border-radius:2px}
+
+/* review */
+.review{display:grid;gap:14px}
+.rcard{border:1px solid var(--line);background:var(--surface)}
+.rhead{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;color:var(--blue-300);text-transform:uppercase}
+.redit{background:transparent;border:1px solid var(--line-hi);color:var(--blue-300);font:inherit;font-size:11px;letter-spacing:.1em;padding:6px 12px;min-height:32px;cursor:pointer;border-radius:2px;transition:all .15s}
+.redit:hover{background:var(--surface-hi);color:#fff}
+.rrow{display:grid;grid-template-columns:130px 1fr;gap:14px;padding:11px 16px;border-bottom:1px solid rgba(61,139,255,.08);font-size:14px}
+.rrow:last-child{border-bottom:0}
+.rrow dt{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;padding-top:2px}
+.rrow dd{margin:0;white-space:pre-wrap;word-break:break-word}
+.rrow dd.empty{color:#5f77a0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--blue-400);background:var(--surface-hi);color:var(--blue-100);padding:3px 10px;font-size:12px;border-radius:2px}
+
+/* buttons */
+.actions{display:flex;justify-content:space-between;gap:14px;margin:44px 0 0;padding:24px 0 80px;border-top:1px solid var(--line)}
+.btn{min-height:52px;padding:0 30px;font-family:var(--font-display);font-weight:700;font-size:12px;letter-spacing:.2em;cursor:pointer;border-radius:2px;transition:all .2s;text-transform:uppercase}
+.btn.ghost{background:transparent;border:1px solid var(--line-hi);color:var(--blue-300)}
+.btn.ghost:hover{background:var(--surface-hi);color:#fff}
+.btn.primary{background:linear-gradient(90deg,var(--blue-700),var(--blue-500));border:1px solid var(--blue-300);color:#fff;box-shadow:var(--glow)}
+.btn.primary:hover{background:linear-gradient(90deg,var(--blue-500),var(--blue-400));transform:translateY(-2px)}
+.btn[disabled]{opacity:.5;cursor:wait;transform:none}
+.status{margin-top:18px;padding:14px 16px;border:1px solid var(--line-hi);background:rgba(31,107,255,.08);font-size:13px;color:var(--blue-100);line-height:1.7}
+.done-card{text-align:center;padding:100px 0 140px}
+.done-card h2{font-size:clamp(28px,5vw,44px)}
+.done-card .sub{margin:0}
+
+footer{padding:32px 0 48px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;color:var(--muted);border-top:1px solid var(--line)}
+
+@media(max-width:760px){
+  .wrap{padding:0 16px}nav{height:64px}.navtag{display:none}
+  .hero{padding:36px 0 0}
+  .step .t{display:none}.step .n{width:36px;height:36px;font-size:12px}.stepper li+li::before{top:17px}
+  .refs,.looks,.specs{grid-template-columns:1fr}
+  .rrow{grid-template-columns:1fr;gap:4px}
+  .panel{padding-top:36px}
+  .actions{flex-direction:column-reverse}.btn{width:100%}
+  .glow{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}*{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="glow" id="glow" aria-hidden="true"></div>
+<div class="wrap">
+<nav><div class="logo">MU<i>YING</i> STUDIO</div><div class="navtag">Short-form brief</div></nav>
+
+<header class="hero" id="hero">
+<div class="eyebrow">Short-form video production brief</div>
+<h1>Tell us what<br>you want to make.</h1>
+<p>把想要的影片、參考範例和規格留下來。其餘交給沐影。</p>
+</header>
+
+<ol class="stepper" id="stepper" aria-label="填表進度"></ol>
+<div class="progress" aria-hidden="true"><i id="bar"></i></div>
+
+<form id="brief" novalidate>
+
+<section class="panel" data-title="Project">
+<div class="eyebrow">01 / Project</div>
+<div class="content"><h2>這次想做什麼？</h2><p class="sub">簡單說就好。</p>
+<label for="f-project">專案／影片名稱</label><input id="f-project" name="project" placeholder="個人 IP 知識型 Reels">
+<label for="f-idea">簡單想法</label><textarea id="f-idea" name="idea" placeholder="想拍什麼、想傳達什麼、希望大概是什麼感覺。"></textarea>
+<label>發布平台</label><div class="options" data-key="platform"><button type="button" class="option">IG Reels</button><button type="button" class="option">TikTok</button><button type="button" class="option">YouTube Shorts</button><button type="button" class="option">YouTube</button><button type="button" class="option">Facebook</button></div>
+</div></section>
+
+<section class="panel" data-title="Reference" hidden>
+<div class="eyebrow">02 / Reference</div>
+<div class="content" style="max-width:none"><h2>你喜歡哪種影片？</h2><p class="sub">貼上最多 3 支參考影片，再告訴我們你喜歡哪裡。</p>
+<div class="refs">
+<div class="ref"><div class="refnum">REFERENCE 01</div><input name="ref1" aria-label="參考影片 1 連結" placeholder="貼上影片連結"><div class="tags" data-key="ref1tags"><span class="tag">拍攝</span><span class="tag">剪輯</span><span class="tag">字幕</span><span class="tag">節奏</span><span class="tag">色調</span><span class="tag">運鏡</span><span class="tag">音樂</span><span class="tag">開頭</span></div></div>
+<div class="ref"><div class="refnum">REFERENCE 02</div><input name="ref2" aria-label="參考影片 2 連結" placeholder="貼上影片連結"><div class="tags" data-key="ref2tags"><span class="tag">拍攝</span><span class="tag">剪輯</span><span class="tag">字幕</span><span class="tag">節奏</span><span class="tag">色調</span><span class="tag">運鏡</span><span class="tag">音樂</span><span class="tag">開頭</span></div></div>
+<div class="ref"><div class="refnum">REFERENCE 03</div><input name="ref3" aria-label="參考影片 3 連結" placeholder="貼上影片連結"><div class="tags" data-key="ref3tags"><span class="tag">拍攝</span><span class="tag">剪輯</span><span class="tag">字幕</span><span class="tag">節奏</span><span class="tag">色調</span><span class="tag">運鏡</span><span class="tag">音樂</span><span class="tag">開頭</span></div></div>
+</div>
+<label class="upload">上傳參考影片／圖片 <input type="file" id="files" accept="video/*,image/*" multiple></label>
+</div></section>
+
+<section class="panel" data-title="Direction" hidden>
+<div class="eyebrow">03 / Direction</div>
+<div class="content"><h2>想要的樣子</h2><p class="sub">選最接近的方向，可以複選。</p>
+<label>影片形式</label><div class="options" data-key="format"><button type="button" class="option">正面口播</button><button type="button" class="option">藏鏡人問答</button><button type="button" class="option">Vlog</button><button type="button" class="option">雙人對談</button><button type="button" class="option">Podcast</button><button type="button" class="option">情境短劇</button><button type="button" class="option">旁白＋畫面</button><button type="button" class="option">產品／B-roll</button></div>
+<label>整體感覺</label>
+<div class="looks" data-key="style">
+<div class="look" tabindex="0" role="button"><b>自然</b><small>NATURAL</small></div><div class="look" tabindex="0" role="button"><b>專業</b><small>PROFESSIONAL</small></div><div class="look" tabindex="0" role="button"><b>高級</b><small>PREMIUM</small></div><div class="look" tabindex="0" role="button"><b>電影感</b><small>CINEMATIC</small></div><div class="look" tabindex="0" role="button"><b>生活感</b><small>LIFESTYLE</small></div><div class="look" tabindex="0" role="button"><b>快節奏</b><small>DYNAMIC</small></div>
+</div></div></section>
+
+<section class="panel" data-title="Spec" hidden>
+<div class="eyebrow">04 / Specification</div>
+<div class="content"><h2>影片規格</h2><p class="sub">不確定的項目可以交給我們判斷。</p>
+<div class="specs">
+<div><label for="f-ratio">比例</label><select id="f-ratio" name="ratio"><option>9:16 直式</option><option>16:9 橫式</option><option>4:5</option><option>1:1</option><option>不確定</option></select></div>
+<div><label for="f-length">長度</label><select id="f-length" name="length"><option>60 秒內</option><option>15 秒內</option><option>30 秒</option><option>60–90 秒</option><option>不確定</option></select></div>
+<div><label for="f-sub">字幕</label><select id="f-sub" name="subtitle"><option>重點字幕</option><option>完整字幕</option><option>少量文字</option><option>不需要</option><option>交給沐影</option></select></div>
+<div><label for="f-ai">AI 畫面</label><select id="f-ai" name="ai"><option>交給沐影判斷</option><option>不要</option><option>可以少量</option><option>可以大量</option></select></div>
+</div>
+<label>已有素材</label><div class="options" data-key="assets"><button type="button" class="option">毛片</button><button type="button" class="option">照片</button><button type="button" class="option">Logo</button><button type="button" class="option">產品素材</button><button type="button" class="option">都沒有</button></div>
+</div></section>
+
+<section class="panel" data-title="Notes" hidden>
+<div class="eyebrow">05 / Notes</div>
+<div class="content"><h2>其他想法</h2><p class="sub">沒有的話可以直接下一步。</p>
+<label for="f-extra">還有什麼需要知道？</label><textarea id="f-extra" name="extra" placeholder="例如：希望像朋友聊天、前三秒要抓人。"></textarea>
+<label for="f-avoid">不想要的方向</label><textarea id="f-avoid" name="avoid" placeholder="例如：不要太像業配、不要綜藝字卡、不要過度特效。"></textarea>
+</div></section>
+
+<section class="panel" data-title="Review" hidden>
+<div class="eyebrow">06 / Review</div>
+<div class="content" style="max-width:none"><h2>確認需求</h2><p class="sub">請確認以下內容，沒問題就按「確認送出」。要修改可以點各區塊的「編輯」。</p>
+<div class="review" id="review"></div>
+<div class="status" id="status" role="status" hidden></div>
+</div></section>
+
+<section class="done-card" id="done" hidden>
+<div class="eyebrow">Received</div><h2>已送出</h2><p class="sub">謝謝你，沐影會盡快與你聯繫。</p>
+</section>
+
+<div class="actions" id="actions">
+<button type="button" class="btn ghost" id="prev">上一步</button>
+<button type="button" class="btn primary" id="next">下一步</button>
+</div>
+</form>
+
+<footer><span>© MUYING STUDIO</span><span>SHORT FILM / REELS / TIKTOK / YOUTUBE</span></footer>
+</div>
+
+<script>
+(()=>{
+/* Google Sheet（Apps Script Web App）endpoint。留空 = 送出功能尚未啟用，不會傳任何資料 */
+const ENDPOINT='https://script.google.com/macros/s/AKfycbxt3PUlTR4GoAuds_QsjX6u-2WaxAm25Fr8o5LNmx5GsDTTENOZQyZXkGgr4uoKOEcnqg/exec';
+
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const panels=$$('.panel');
+const LAST=panels.length-1;                 // 最後一階段 = Review
+const titles=panels.map(p=>p.dataset.title);
+let cur=0,sent=false;const visited=new Set([0]);
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* 階段列 */
+titles.forEach((t,i)=>{
+  const li=document.createElement('li'),b=document.createElement('button');
+  b.type='button';b.className='step';
+  b.innerHTML=`<span class="n"><span>${i+1}</span></span><span class="t">${t}</span>`;
+  b.setAttribute('aria-label',`第 ${i+1} 階段 ${t}`);
+  b.onclick=()=>go(i);li.appendChild(b);$('#stepper').appendChild(li);
+});
+
+/* 選項切換 */
+[['.options','.option'],['.tags','.tag'],['.looks','.look']].forEach(([g,item])=>$$(g).forEach(el=>{
+  el.addEventListener('click',e=>{const x=e.target.closest(item);if(x)x.classList.toggle('on')});
+  if(item==='.look')el.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches(item)){e.preventDefault();e.target.classList.toggle('on')}});
+}));
+
+/* 收集資料 */
+const val=n=>($(`[name="${n}"]`)?.value||'').trim();
+const sel=k=>$$(`[data-key="${k}"] .on`).map(x=>x.firstChild.textContent.trim());
+function collect(){
+  return{
+    project:val('project'),idea:val('idea'),platform:sel('platform'),
+    references:[1,2,3].map(i=>({url:val('ref'+i),likes:sel('ref'+i+'tags')})).filter(r=>r.url),
+    files:[...$('#files').files].map(f=>f.name),
+    format:sel('format'),style:sel('style'),
+    ratio:val('ratio'),length:val('length'),subtitle:val('subtitle'),ai:val('ai'),assets:sel('assets'),
+    extra:val('extra'),avoid:val('avoid')
+  };
+}
+
+/* 確認頁（一律用 textContent，避免使用者輸入被當成 HTML） */
+function row(dt,v){
+  const r=document.createElement('div');r.className='rrow';
+  const a=document.createElement('dt');a.textContent=dt;
+  const b=document.createElement('dd');
+  if(Array.isArray(v)&&v.length){
+    const c=document.createElement('div');c.className='chips';
+    v.forEach(x=>{const s=document.createElement('span');s.className='chip';s.textContent=x;c.appendChild(s)});b.appendChild(c);
+  }else if(!v||!v.length){b.className='empty';b.textContent='—'}
+  else b.textContent=v;
+  r.append(a,b);return r;
+}
+function card(idx,rows){
+  const c=document.createElement('section');c.className='rcard';
+  const h=document.createElement('div');h.className='rhead';
+  const s=document.createElement('span');s.textContent=`0${idx+1} / ${titles[idx]}`;
+  const e=document.createElement('button');e.type='button';e.className='redit';e.textContent='編輯';e.onclick=()=>go(idx);
+  h.append(s,e);
+  const dl=document.createElement('dl');dl.style.margin=0;rows.forEach(r=>dl.appendChild(r));
+  c.append(h,dl);return c;
+}
+function renderReview(){
+  const d=collect(),box=$('#review');box.textContent='';
+  const refRows=d.references.flatMap((r,i)=>[row(`參考 0${i+1}`,r.url),row('喜歡的點',r.likes)]);
+  if(!refRows.length)refRows.push(row('參考影片',''));
+  if(d.files.length)refRows.push(row('上傳檔案',d.files));
+  box.append(
+    card(0,[row('專案名稱',d.project),row('簡單想法',d.idea),row('發布平台',d.platform)]),
+    card(1,refRows),
+    card(2,[row('影片形式',d.format),row('整體感覺',d.style)]),
+    card(3,[row('比例',d.ratio),row('長度',d.length),row('字幕',d.subtitle),row('AI 畫面',d.ai),row('已有素材',d.assets)]),
+    card(4,[row('其他想法',d.extra),row('不想要的方向',d.avoid)])
+  );
+}
+
+/* 切換階段 */
+function go(i){
+  if(sent)return;
+  cur=Math.max(0,Math.min(LAST,i));visited.add(cur);
+  panels.forEach((p,k)=>p.hidden=k!==cur);
+  $('#hero').hidden=cur!==0;
+  if(cur===LAST){renderReview();$('#status').hidden=true}
+  $$('.step').forEach((b,k)=>{
+    b.classList.toggle('done',k!==cur&&visited.has(k));
+    k===cur?b.setAttribute('aria-current','step'):b.removeAttribute('aria-current');
+  });
+  $('#bar').style.width=(cur/LAST*100)+'%';
+  $('#prev').style.visibility=cur===0?'hidden':'visible';
+  const n=$('#next');n.textContent=cur===LAST?'確認送出':'下一步';n.disabled=false;
+  scrollTo({top:cur===0?0:$('#stepper').offsetTop-8,behavior:reduce?'auto':'smooth'});
+}
+$('#prev').onclick=()=>go(cur-1);
+$('#next').onclick=()=>cur===LAST?submit():go(cur+1);
+
+/* 送出：endpoint 未設定時只在 console 印出，不傳送 */
+async function submit(){
+  const st=$('#status'),btn=$('#next'),data=collect();
+  data.submittedAt=new Date().toISOString();
+  if(!ENDPOINT){
+    console.log('[brief payload]',data);
+    st.hidden=false;st.textContent='送出功能尚未啟用：Google Sheet endpoint 還沒設定，目前不會傳送任何資料。（內容已印在瀏覽器 console 供測試）';
+    return;
+  }
+  btn.disabled=true;btn.textContent='送出中…';st.hidden=true;
+  try{
+    // Apps Script 用 text/plain 可避開 CORS preflight
+    await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+    sent=true;panels.forEach(p=>p.hidden=true);
+    ['#stepper','#actions','#hero'].forEach(s=>$(s).hidden=true);$('.progress').hidden=true;$('#done').hidden=false;
+    scrollTo({top:0});
+  }catch(err){
+    btn.disabled=false;btn.textContent='確認送出';
+    st.hidden=false;st.textContent='送出失敗，請檢查網路後再試一次。';
+  }
+}
+
+/* 游標光暈 */
+if(matchMedia('(pointer:fine)').matches&&!reduce){
+  const g=$('#glow');addEventListener('pointermove',e=>{g.style.left=e.clientX+'px';g.style.top=e.clientY+'px'},{passive:true});
+}
+go(0);
+})();
+</script>
+</body></html>
