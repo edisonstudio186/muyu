@@ -393,7 +393,9 @@ async function submit(){
   btn.disabled=true;btn.textContent='送出中…';st.hidden=true;
   try{
     // Apps Script 用 text/plain 可避開 CORS preflight
-    await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+    const res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+    const r=await res.json().catch(()=>null);
+    if(!res.ok||!r||!r.ok)throw new Error(r&&r.error||'HTTP '+res.status);
     sent=true;panels.forEach(p=>p.hidden=true);
     ['#stepper','#actions','#hero'].forEach(s=>$(s).hidden=true);$('.progress').hidden=true;$('#done').hidden=false;
     scrollTo({top:0});
